@@ -752,7 +752,7 @@ if __name__ == "__main__":
         "--sensor_type",
         type=str,
         required=True,
-        choices=["9dtact", "gelsight", "tac3d", "dm-tac"],
+        choices=["9DTact", "GelSight", "Tac3D", "DM-Tac"],
         help="Sensor type (required). Determines default paths and visualization strategy."
     )
     

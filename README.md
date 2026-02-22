@@ -30,25 +30,25 @@ python infer.py --sensor_type <sensor_type>
 ```
 
 Supported sensor types:
-- `9dtact` - 9DTact sensor
-- `gelsight` - GelSight sensor
-- `tac3d` - Tac3D sensor
-- `dm-tac` - DM-Tac sensor
+- `9DTact` - 9DTact sensor
+- `GelSight` - GelSight sensor
+- `Tac3D` - Tac3D sensor
+- `DM-Tac` - DM-Tac sensor
 
 Examples:
 
 ```bash
 # Process 9DTact sensor images
-python infer.py --sensor_type 9dtact
+python infer.py --sensor_type 9DTact
 
 # Process GelSight sensor images
-python infer.py --sensor_type gelsight
+python infer.py --sensor_type GelSight
 
 # Save contact masks
-python infer.py --sensor_type 9dtact --save_mask
+python infer.py --sensor_type 9DTact --save_mask
 
 # Disable Open3D visualization
-python infer.py --sensor_type tac3d --no_open3d
+python infer.py --sensor_type Tac3D --no_open3d
 ```
 
 ## Output
