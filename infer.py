@@ -305,10 +305,6 @@ def depth_to_point_cloud(depth_np: np.ndarray, depth_range: tuple, scale: float 
     
     Uses baseline (95th percentile) normalization to preserve absolute depth relationships,
     matching the demo's approach for consistent 3D visualization.
-    
-    For 9dtact sensor, applies mask-based zone coloring:
-    - Non-contact areas: yellow gradient [0.6, 1.0] (flat surface)
-    - Contact areas: full colormap [0, 1.0] (red-orange-yellow)
 
     Args:
         depth_np: depth map (H, W) in physical units (e.g., [0, 10] mm)
@@ -316,8 +312,8 @@ def depth_to_point_cloud(depth_np: np.ndarray, depth_range: tuple, scale: float 
         scale: scaling factor for Z axis
         downsample: downsample factor for grid
         edge_margin: pixels to exclude from edges (default: 30)
-        mask_np: optional contact mask (H, W) for 9dtact zone-based coloring
-        sensor_type: sensor type ('9dtact' or 'default')
+        mask_np: optional contact mask (H, W) 
+        sensor_type: sensor type 
     """
     h, w = depth_np.shape
     
@@ -339,7 +335,6 @@ def depth_to_point_cloud(depth_np: np.ndarray, depth_range: tuple, scale: float 
     valid_mask_ds = valid_mask[::downsample, ::downsample]
     Z = depth_np[::downsample, ::downsample].astype(np.float32)
 
-    # Use baseline-based normalization (matching demo's approach)
     # This preserves absolute depth relationships across images
     Z_valid = Z[valid_mask_ds]
     if len(Z_valid) > 0:
@@ -349,11 +344,8 @@ def depth_to_point_cloud(depth_np: np.ndarray, depth_range: tuple, scale: float 
         
         if baseline_depth - depth_min_valid > 1e-8:
             # Normalize based on baseline, not min-max
-            # This keeps shallow indentations different from deep indentations
             raw_norm = (Z - depth_min_valid) / (baseline_depth - depth_min_valid + 1e-8)
             
-            # 9dtact-specific: mask-based zone coloring
-            #if sensor_type == "gelsight" and mask_np is not None:
             # Ensure mask matches depth dimensions before downsampling
             if mask_np.shape != (h, w):
                 # Resize mask to match depth dimensions using nearest interpolation
@@ -422,8 +414,6 @@ def test(opt):
     print(f"Input: {opt.image_path}")
     print(f"Output: {opt.output_dir}")
     print(f"Input size: {opt.height}x{opt.width}")
-    if opt.sensor_type == "9dtact":
-        print(f"9dtact mask-based zone coloring: ENABLED")
     print(f"{'='*60}\n")
     
     # -------------------------------------------------------------------------
@@ -655,7 +645,6 @@ def test(opt):
                 # Use de-normalized depth for point cloud generation
                 depth_np = depth_denorm[0, 0].detach().cpu().numpy()
                 
-                # Pass mask for 9dtact zone-based coloring
                 mask_for_pc = mask_binary[0, 0].detach().cpu().numpy()
                 
                 points = depth_to_point_cloud(
