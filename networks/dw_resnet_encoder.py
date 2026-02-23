@@ -1,3 +1,18 @@
+"""
+UniCal Encoders: Unified Reconstruction Modules
+
+This module implements lightweight encoders for:
+- Contact mask segmentation
+- Depth map reconstruction
+- Force map estimation
+
+All encoders share a common ResNet-style architecture with depthwise
+separable convolutions for efficiency.
+
+Author: Chenxin Liang, Shoujie Li
+"""
+
+
 from __future__ import absolute_import, division, print_function
 import numpy as np
 import torch

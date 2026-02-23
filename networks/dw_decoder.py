@@ -2,7 +2,6 @@
 UniCal Decoders: Unified Reconstruction Modules
 
 This module implements lightweight decoders for:
-- Contact mask segmentation
 - Depth map reconstruction
 - Force map estimation
 
